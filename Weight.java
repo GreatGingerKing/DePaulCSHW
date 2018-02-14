@@ -1,92 +1,87 @@
-package hw4;
+// You must use this package
+// Do not change it
+package wt;
 
 // Author: Amber Settle
-// CSC 281
-// David Kolschowsky
-// I worked alone with no collaborators.
+// Do not change this class
+
 import java.util.Scanner;
 
 public class Weight
 {
-	// Please do not declare any additional members of the class
-	// Feel free to use local variables as necessary in each method
-	private double wValue;
-	// If you like, you can change the type of scale to Character
-	private char scale;
+	protected double wValue;
+	protected char scale;
 	
 	private final double FACTOR = 2.2046;
+	private final double MINW = 10.0;
 	
 	private Scanner vScan = new Scanner(System.in);
 
  	// The default constructor for the class
  	public Weight()
  	{
-     	wValue=0;
-     	scale='p';
+     	wValue = MINW;
+		scale = 'p';
  	}
 
  	// The parameterized constructor for the class
 	public Weight(double initW, char initS)
 	{
-		if(initW<0){
-			wValue=0;
-		}
-		else wValue = initW;
-		if(initS =='k'){
-			scale=initS;
-		}
-		else scale='p';
+		if (initS != 'p' && initS != 'P' && initS != 'k' && initS != 'K')
+		  	scale = 'p';
+		else scale = initS;
+		if (initW >= MINW)
+			wValue = initW;
+		else wValue = MINW;
 	}
 
  	// Input values for the instance variables using the Scanner vScan
  	public void set()
  	{
- 		System.out.println("Entering the set method.");
- 		boolean scaleFound= false;
- 		char userScale='N';
- 		boolean valueFound = false;
- 		double userValue=-1;
- 		while(!scaleFound){
- 			System.out.print("Please enter the weight scale(p/k): ");
- 			userScale=vScan.nextLine().charAt(0);
- 			if(userScale !='p' && userScale !='k'){
- 				System.out.println("Pounds and kilos are the only valid scales");
-			}
-			else
-				scaleFound=true;
-		}
- 		scale=userScale;
+	  	String iText;
+	  	boolean done = false;
 
- 		while(!valueFound){
- 			System.out.print("Please enter a weight measurement: ");
- 			userValue = Double.parseDouble(vScan.nextLine());
- 			if(userValue <0){
- 				System.out.println("The weight measurement cannot be negative");
-			}
-			else valueFound=true;
+     	while (!done) {
+			System.out.print("Please enter the weight scale (p/k): ");
+			iText = vScan.next();
+			scale = iText.charAt(0);
+			if (scale != 'p' && scale != 'P' && scale != 'k' && scale != 'K')
+				System.out.println("Pounds and kilos are the only valid scales");
+			else done = true;
 		}
-		wValue=userValue;
-
-     	System.out.println("Leaving the set method.");
+     	
+     	done = false;
+     	while (!done) {
+     		System.out.print("Please enter a weight measurement: ");
+     		wValue = vScan.nextDouble();
+     		if (wValue < MINW)
+     			System.out.println("The weight measurement must be larger than " + MINW + ".");
+     		else done = true;
+     	}
  	}
 
  	// Return the weight in pounds
 	public double getP()
 	{
-		// A stub -- replace by the correct code
-        if(scale=='p') return wValue;
-		else
-		    return wValue*FACTOR;
+		double value;
+
+		if (scale == 'p' || scale == 'P')
+			value = wValue;
+		else value = wValue * FACTOR;
+		
+		return value;
 	}
 
 	// Return the weight in kilos
 	public double getK()
 	{
-		// A stub -- replace by the correct code
-        if(scale=='k') return wValue;
-        else
-            return wValue/FACTOR;
+		double value;
 
+		if (scale == 'k' || scale == 'K')
+			value = wValue;
+		else value = wValue / FACTOR;
+		
+		return value;
 	}
 
 }
